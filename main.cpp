@@ -1,7 +1,7 @@
-#include "publisher.h"
-#include "subscriber.h"
-#include "broker.h"
-#include "message.h"
+#include "Publisher.h"
+#include "Subscriber.h"
+#include "Broker.h"
+#include "Message.h"
 #include <iostream>
 
 using namespace std;
@@ -17,13 +17,26 @@ public:
 };
 
 int main() {
+
+    /**
+     * 시뮬레이션 해보기
+     */
     Broker broker;
     Publisher publisher("Publisher");
-    ConsoleSubscriber subscriber("A");
+    ConsoleSubscriber subscriberA("A");
+    ConsoleSubscriber subscriberB("B");
 
-    broker.subscribe("news", &subscriber);
+
+    subscriberA.subscribeToTopic("news");
+    broker.subscribe("news", &subscriberA);
+
+    subscriberB.subscribeToTopic("news");
+    broker.subscribe("news", &subscriberB);
 
     Message message("Hello World!");
     publisher.publish(broker, message, "news");
+    publisher.publish(broker, Message("abc"), "news");
+
+
     return 0;
 }
